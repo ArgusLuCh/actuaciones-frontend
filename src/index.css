@@ -389,15 +389,3 @@ body {
   .dashboard-content { padding: 16px; }
   .form-row { flex-direction: column; }
 }
-
-.btn-reset {
-  background: #fef3c7;
-  color: #92400e;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-.btn-reset:hover { background: #fde68a; }

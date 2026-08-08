@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import TareaItem from './TareaItem'
 
-const API = "http://localhost:3000"
+const API = "https://actuaciones-backend-production.up.railway.app"
 
 function Actuacion({ actuacion, onEliminar, token }) {
   const [abierto, setAbierto] = useState(false)

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import FormActuacion from '../components/FormActuacion'
 import Actuacion from '../components/Actuacion'
 
-const API = "http://localhost:3000"
+const API = "https://actuaciones-backend-production.up.railway.app"
 
 function Dashboard() {
   const [actuaciones, setActuaciones] = useState([])

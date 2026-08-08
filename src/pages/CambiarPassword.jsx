@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const API = "http://localhost:3000"
+const API = "https://actuaciones-backend-production.up.railway.app"
 
 function CambiarPassword() {
   const [form, setForm] = useState({ password_nueva: "", confirmar: "" })
