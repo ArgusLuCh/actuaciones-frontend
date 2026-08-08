@@ -35,11 +35,14 @@ function FormActuacion({ onAgregar }) {
               value={form.numero}
               onChange={function(e) { setForm({...form, numero: e.target.value}) }}
             />
-            <input
-              type="date"
-              value={form.fecha_recepcion}
-              onChange={function(e) { setForm({...form, fecha_recepcion: e.target.value}) }}
-            />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              <label style={{ fontSize: '11px', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Fecha del hecho</label>
+              <input
+                type="date"
+                value={form.fecha_recepcion}
+                onChange={function(e) { setForm({...form, fecha_recepcion: e.target.value}) }}
+              />
+            </div>
           </div>
           <input
             type="text"

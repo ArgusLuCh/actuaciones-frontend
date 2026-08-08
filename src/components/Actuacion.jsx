@@ -62,7 +62,7 @@ function Actuacion({ actuacion, onEliminar, token }) {
         <div className="actuacion-info">
           <div className="actuacion-numero">Actuación {actuacion.numero}</div>
           <div className="actuacion-detalle">
-            {actuacion.damnificado} · {actuacion.lugar} · Recibida: {actuacion.fecha_recepcion}
+            {actuacion.damnificado} · {actuacion.lugar} · Fecha del hecho: {actuacion.fecha_recepcion}
           </div>
           <div className="actuacion-caratula">{actuacion.caratula}</div>
         </div>
