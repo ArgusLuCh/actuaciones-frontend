@@ -118,9 +118,6 @@ function Admin() {
                   </div>
                 </div>
                 {u.rol !== 'admin' && (
-                  <button className="btn-eliminar" onClick={() => eliminarUsuario(u.id)}>🗑️</button>
-                )}
-                {u.rol !== 'admin' && (
                   <div style={{ display: 'flex', gap: '8px' }}>
                   <button className="btn-reset" onClick={() => resetearPassword(u.id)}>🔑 Resetear</button>
                   <button className="btn-eliminar" onClick={() => eliminarUsuario(u.id)}>🗑️</button>
