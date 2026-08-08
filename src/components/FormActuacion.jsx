@@ -5,7 +5,7 @@ function FormActuacion({ onAgregar }) {
     numero: "",
     damnificado: "",
     lugar: "",
-    caratula: "",
+    caratula: "S/",
     fecha_recepcion: ""
   })
   const [abierto, setAbierto] = useState(false)
@@ -57,11 +57,15 @@ function FormActuacion({ onAgregar }) {
             onChange={function(e) { setForm({...form, lugar: e.target.value}) }}
           />
           <input
-            type="text"
-            placeholder="Carátula"
-            value={form.caratula}
-            onChange={function(e) { setForm({...form, caratula: e.target.value}) }}
-          />
+  type="text"
+  placeholder="S/ Carátula"
+  value={form.caratula}
+  onChange={function(e) {
+    const valor = e.target.value
+    if (!valor.startsWith("S/")) return
+    setForm({...form, caratula: valor})
+  }}
+/>
           <button onClick={handleSubmit} className="btn-registrar">Registrar actuación</button>
         </div>
       )}
