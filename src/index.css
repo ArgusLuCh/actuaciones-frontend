@@ -389,3 +389,34 @@ body {
   .dashboard-content { padding: 16px; }
   .form-row { flex-direction: column; }
 }
+
+/* Input con botón ver contraseña */
+.input-password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-password-wrap input {
+  width: 100%;
+  padding-right: 44px;
+}
+
+.btn-ver-password {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-size: 16px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  transition: color var(--transition-fast);
+  user-select: none;
+}
+
+.btn-ver-password:hover {
+  color: var(--color-text);
+}

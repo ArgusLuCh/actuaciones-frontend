@@ -10,6 +10,8 @@ function CambiarPassword() {
   const navigate = useNavigate()
   const token = localStorage.getItem('token')
   const usuario = JSON.parse(localStorage.getItem('usuario') || '{}')
+  const [verPassword1, setVerPassword1] = useState(false)
+  const [verPassword2, setVerPassword2] = useState(false)
 
   async function handleCambiar() {
     if (form.password_nueva !== form.confirmar) {
@@ -53,19 +55,42 @@ function CambiarPassword() {
           Es tu primer ingreso. Por seguridad, debés cambiar tu contraseña.
         </p>
         {error && <p className="error">{error}</p>}
-        <input
-          type="password"
-          placeholder="Nueva contraseña"
-          value={form.password_nueva}
-          onChange={function(e) { setForm({...form, password_nueva: e.target.value}) }}
-        />
-        <input
-          type="password"
-          placeholder="Confirmar contraseña"
-          value={form.confirmar}
-          onChange={function(e) { setForm({...form, confirmar: e.target.value}) }}
-          onKeyDown={function(e) { if (e.key === 'Enter') handleCambiar() }}
-        />
+        <div className="input-password-wrap">
+  <input
+    type={verPassword1 ? "text" : "password"}
+    placeholder="Nueva contraseña"
+    value={form.password_nueva}
+    onChange={function(e) { setForm({...form, password_nueva: e.target.value}) }}
+  />
+  <button
+    className="btn-ver-password"
+    onMouseDown={() => setVerPassword1(true)}
+    onMouseUp={() => setVerPassword1(false)}
+    onMouseLeave={() => setVerPassword1(false)}
+    tabIndex={-1}
+  >
+    👁
+  </button>
+</div>
+
+<div className="input-password-wrap">
+  <input
+    type={verPassword2 ? "text" : "password"}
+    placeholder="Confirmar contraseña"
+    value={form.confirmar}
+    onChange={function(e) { setForm({...form, confirmar: e.target.value}) }}
+    onKeyDown={function(e) { if (e.key === 'Enter') handleCambiar() }}
+  />
+  <button
+    className="btn-ver-password"
+    onMouseDown={() => setVerPassword2(true)}
+    onMouseUp={() => setVerPassword2(false)}
+    onMouseLeave={() => setVerPassword2(false)}
+    tabIndex={-1}
+  >
+    👁
+  </button>
+</div>
         <button onClick={handleCambiar} disabled={loading}>
           {loading ? "Guardando..." : "Guardar contraseña"}
         </button>

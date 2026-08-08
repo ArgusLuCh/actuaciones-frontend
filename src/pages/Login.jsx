@@ -8,6 +8,7 @@ function Login() {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const [verPassword, setVerPassword] = useState(false)
 
   async function handleLogin() {
     setLoading(true)
@@ -48,13 +49,24 @@ function Login() {
           value={form.dni}
           onChange={function(e) { setForm({...form, dni: e.target.value}) }}
         />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={form.password}
-          onChange={function(e) { setForm({...form, password: e.target.value}) }}
-          onKeyDown={function(e) { if (e.key === 'Enter') handleLogin() }}
-        />
+        <div className="input-password-wrap">
+  <input
+    type={verPassword ? "text" : "password"}
+    placeholder="Contraseña"
+    value={form.password}
+    onChange={function(e) { setForm({...form, password: e.target.value}) }}
+    onKeyDown={function(e) { if (e.key === 'Enter') handleLogin() }}
+  />
+  <button
+    className="btn-ver-password"
+    onMouseDown={() => setVerPassword(true)}
+    onMouseUp={() => setVerPassword(false)}
+    onMouseLeave={() => setVerPassword(false)}
+    tabIndex={-1}
+  >
+    👁
+  </button>
+</div>
         <button onClick={handleLogin} disabled={loading}>
           {loading ? "Entrando..." : "Entrar"}
         </button>
