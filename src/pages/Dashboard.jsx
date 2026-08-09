@@ -10,6 +10,8 @@ function Dashboard() {
   const navigate = useNavigate()
   const usuario = JSON.parse(localStorage.getItem('usuario') || '{}')
   const token = localStorage.getItem('token')
+  const [busqueda, setBusqueda] = useState("")
+  const [busquedaAbierta, setBusquedaAbierta] = useState(false)
 
   async function cargarActuaciones() {
     const res = await fetch(API + "/actuaciones", {
@@ -49,36 +51,65 @@ function Dashboard() {
     navigate('/login')
   }
 
+  const actuacionesFiltradas = actuaciones.filter(function(a) {
+  const texto = busqueda.toLowerCase()
   return (
-    <div className="dashboard">
-      <header className="dashboard-header">
-        <h1>Sistema de Actuaciones</h1>
-        <div className="header-right">
-          <span>Hola, {usuario.nombre}</span>
-          <button onClick={cerrarSesion} className="btn-logout">Cerrar sesión</button>
-        </div>
-      </header>
+    a.numero.toLowerCase().includes(texto) ||
+    a.damnificado.toLowerCase().includes(texto) ||
+    a.lugar.toLowerCase().includes(texto) ||
+    a.caratula.toLowerCase().includes(texto)
+  )
+})
 
-      <div className="dashboard-content">
-        <FormActuacion onAgregar={agregarActuacion} />
+return (
+  <div className="dashboard">
+    <header className="dashboard-header">
+      <h1>Sistema de Actuaciones</h1>
+      <div className="header-right">
+        <span>Hola, {usuario.nombre}</span>
+        <button onClick={cerrarSesion} className="btn-logout">Cerrar sesión</button>
+      </div>
+    </header>
 
-        <div className="seccion">
-          <h2>Mis actuaciones ({actuaciones.length})</h2>
-          {actuaciones.length === 0 && <p className="vacio">No hay actuaciones registradas</p>}
-          {actuaciones.map(function(a) {
-            return (
-              <Actuacion
-                key={a.id}
-                actuacion={a}
-                onEliminar={eliminarActuacion}
-                token={token}
-              />
-            )
-          })}
+    <div className="dashboard-content">
+      <FormActuacion onAgregar={agregarActuacion} />
+
+      <div className="seccion">
+        <div className="seccion-header">
+          <h2>Mis actuaciones ({actuacionesFiltradas.length})</h2>
+          <div className="buscador-wrap">
+            <button
+              className={`btn-lupa ${busquedaAbierta ? 'activo' : ''}`}
+              onClick={() => { setBusquedaAbierta(!busquedaAbierta); setBusqueda("") }}
+            >
+              🔍
+            </button>
+            <input
+              type="text"
+              placeholder="Buscar..."
+              value={busqueda}
+              onChange={function(e) { setBusqueda(e.target.value) }}
+              className={`input-busqueda ${busquedaAbierta ? 'visible' : ''}`}
+              autoFocus={busquedaAbierta}
+            />
+          </div>
         </div>
+
+        {actuacionesFiltradas.length === 0 && <p className="vacio">No hay actuaciones registradas</p>}
+
+        {actuacionesFiltradas.map(function(a) {
+          return (
+            <Actuacion
+              key={a.id}
+              actuacion={a}
+              onEliminar={eliminarActuacion}
+              token={token}
+            />
+          )
+        })}
       </div>
     </div>
-  )
+  </div>
+)
 }
-
 export default Dashboard

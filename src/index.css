@@ -426,3 +426,83 @@ body {
 .form-row input[type="text"] {
   text-transform: uppercase;
 }
+/* ---- SECCIÓN HEADER ---- */
+.seccion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border-subtle);
+  margin-bottom: var(--space-3);
+}
+
+.seccion-header h2 {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* ---- BUSCADOR ---- */
+.buscador-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.btn-lupa {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+}
+
+.btn-lupa:hover {
+  border-color: #1a56a0;
+  color: #1a56a0;
+  background: rgba(26, 86, 160, 0.08);
+}
+
+.btn-lupa.activo {
+  border-color: #1a56a0;
+  background: rgba(26, 86, 160, 0.12);
+  color: #1a56a0;
+  box-shadow: 0 0 0 3px rgba(26, 86, 160, 0.1);
+}
+
+.input-busqueda {
+  width: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  outline: none;
+  transition: width var(--transition-normal), padding var(--transition-normal), border var(--transition-normal), background var(--transition-normal);
+  overflow: hidden;
+}
+
+.input-busqueda.visible {
+  width: 220px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid #1a56a0;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.input-busqueda::placeholder {
+  color: var(--color-text-muted);
+}
