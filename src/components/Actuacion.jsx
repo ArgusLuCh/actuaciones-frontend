@@ -34,17 +34,20 @@ function Actuacion({ actuacion, onEliminar, token }) {
     cargarTareas()
   }
 
-  async function toggleTarea(id, completada) {
-    await fetch(API + "/tareas/" + id, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token
-      },
-      body: JSON.stringify({ completada: completada ? 0 : 1 })
-    })
-    cargarTareas()
-  }
+async function toggleTarea(id, completada) {
+  await fetch(API + "/tareas/" + id, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token
+    },
+    body: JSON.stringify({ completada: completada ? 0 : 1 })
+  })
+  setTareas(tareas.map(function(t) {
+    if (t.id === id) return { ...t, completada: completada ? 0 : 1 }
+    return t
+  }))
+}
 
   async function eliminarTarea(id) {
     await fetch(API + "/tareas/" + id, {
