@@ -11,7 +11,6 @@ function Dashboard() {
   const usuario = JSON.parse(localStorage.getItem('usuario') || '{}')
   const token = localStorage.getItem('token')
   const [busqueda, setBusqueda] = useState("")
-  const [busquedaAbierta, setBusquedaAbierta] = useState(false)
 
   async function cargarActuaciones() {
     const res = await fetch(API + "/actuaciones", {
@@ -76,24 +75,15 @@ return (
 
       <div className="seccion">
         <div className="seccion-header">
-          <h2>Mis actuaciones ({actuacionesFiltradas.length})</h2>
-          <div className="buscador-wrap">
-            <button
-              className={`btn-lupa ${busquedaAbierta ? 'activo' : ''}`}
-              onClick={() => { setBusquedaAbierta(!busquedaAbierta); setBusqueda("") }}
-            >
-              🔍
-            </button>
-            <input
-              type="text"
-              placeholder="Buscar..."
-              value={busqueda}
-              onChange={function(e) { setBusqueda(e.target.value) }}
-              className={`input-busqueda ${busquedaAbierta ? 'visible' : ''}`}
-              autoFocus={busquedaAbierta}
-            />
-          </div>
-        </div>
+  <h2>Mis actuaciones ({actuacionesFiltradas.length})</h2>
+  <input
+    type="text"
+    placeholder="Buscar..."
+    value={busqueda}
+    onChange={function(e) { setBusqueda(e.target.value) }}
+    className="input-busqueda-inline"
+  />
+</div>
 
         {actuacionesFiltradas.length === 0 && <p className="vacio">No hay actuaciones registradas</p>}
 
