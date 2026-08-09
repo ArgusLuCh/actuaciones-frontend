@@ -420,3 +420,9 @@ body {
 .btn-ver-password:hover {
   color: var(--color-text);
 }
+
+/* Campos en mayúsculas */
+.form-grid-vertical input[type="text"],
+.form-row input[type="text"] {
+  text-transform: uppercase;
+}
