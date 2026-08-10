@@ -117,11 +117,11 @@ function Admin() {
                     {u.debe_cambiar_password ? " · ⚠️ No cambió contraseña" : " · ✅ Contraseña configurada"}
                   </div>
                 </div>
-                {u.rol !== 'admin' && (
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                  <button className="btn-reset" onClick={() => resetearPassword(u.id)}>🔑 Resetear</button>
-                  <button className="btn-eliminar" onClick={() => eliminarUsuario(u.id)}>🗑️</button>
-                  </div>
+{u.rol !== 'admin' && (
+  <div className="user-acciones">
+    <button className="btn-reset" onClick={() => resetearPassword(u.id)}>🔑 Resetear</button>
+    <button className="btn-eliminar" onClick={() => eliminarUsuario(u.id)}>🗑️</button>
+  </div>
 )}
               </div>
             )
