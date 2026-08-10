@@ -7,10 +7,14 @@ const API = "https://actuaciones-backend-production.up.railway.app"
 
 function Dashboard() {
   const [actuaciones, setActuaciones] = useState([])
+  const [historial, setHistorial] = useState([])
   const navigate = useNavigate()
   const usuario = JSON.parse(localStorage.getItem('usuario') || '{}')
   const token = localStorage.getItem('token')
   const [busqueda, setBusqueda] = useState("")
+  const [historialAbierto, setHistorialAbierto] = useState(false)
+  const [error, setError] = useState("")
+  const [mensaje, setMensaje] = useState("")
 
   async function cargarActuaciones() {
     const res = await fetch(API + "/actuaciones", {
@@ -20,8 +24,23 @@ function Dashboard() {
     setActuaciones(datos)
   }
 
+  async function cargarHistorial() {
+    const res = await fetch(API + "/actuaciones/historial", {
+      headers: { Authorization: "Bearer " + token }
+    })
+
+    if (!res.ok) {
+      setError("No se pudo cargar el historial de actuaciones")
+      return
+    }
+
+    const datos = await res.json()
+    setHistorial(datos)
+  }
+
   useEffect(function() {
     cargarActuaciones()
+    cargarHistorial()
   }, [])
 
   async function agregarActuacion(form) {
@@ -36,12 +55,28 @@ function Dashboard() {
     cargarActuaciones()
   }
 
-  async function eliminarActuacion(id) {
-    await fetch(API + "/actuaciones/" + id, {
-      method: "DELETE",
+  async function elevarActuacion(id) {
+    setError("")
+    setMensaje("")
+
+    const res = await fetch(API + "/actuaciones/" + id + "/elevar", {
+      method: "PUT",
       headers: { Authorization: "Bearer " + token }
     })
+    const datos = await res.json().catch(function() { return {} })
+
+    if (!res.ok) {
+      setError(datos.error || "No se pudo elevar la actuación")
+      return
+    }
+
+    setMensaje("Actuación elevada y guardada en el historial")
     cargarActuaciones()
+    cargarHistorial()
+  }
+
+  async function alternarHistorial() {
+    setHistorialAbierto(!historialAbierto)
   }
 
   function cerrarSesion() {
@@ -72,6 +107,8 @@ return (
 
     <div className="dashboard-content">
       <FormActuacion onAgregar={agregarActuacion} />
+      {error && <p className="error">{error}</p>}
+      {mensaje && <p className="success">{mensaje}</p>}
 
       <div className="seccion">
         <div className="seccion-header">
@@ -92,12 +129,42 @@ return (
             <Actuacion
               key={a.id}
               actuacion={a}
-              onEliminar={eliminarActuacion}
+              onElevar={elevarActuacion}
               token={token}
             />
           )
         })}
       </div>
+
+      <section className="seccion historial">
+        <div className="seccion-header">
+          <h2>Historial de actuaciones ({historial.length})</h2>
+          <button type="button" className="btn-historial" onClick={alternarHistorial}>
+            {historialAbierto ? "Ocultar historial" : "Ver historial"}
+          </button>
+        </div>
+
+        {historialAbierto && (
+          <div className="historial-lista">
+            {historial.length === 0 && <p className="vacio">No hay actuaciones elevadas</p>}
+
+            {historial.map(function(a) {
+              return (
+                <article key={a.id} className="historial-card">
+                  <div className="historial-info">
+                    <div className="historial-numero">Actuación {a.numero}</div>
+                    <div className="historial-caratula">{a.caratula}</div>
+                    <div className="historial-detalle">
+                      {a.damnificado} · {a.lugar} · Fecha del hecho: {a.fecha_recepcion}
+                    </div>
+                  </div>
+                  <span className="estado-elevada">Elevada</span>
+                </article>
+              )
+            })}
+          </div>
+        )}
+      </section>
     </div>
   </div>
 )

@@ -3,7 +3,7 @@ import TareaItem from './TareaItem'
 
 const API = "https://actuaciones-backend-production.up.railway.app"
 
-function Actuacion({ actuacion, onEliminar, token }) {
+function Actuacion({ actuacion, onElevar, token }) {
   const [abierto, setAbierto] = useState(false)
   const [tareas, setTareas] = useState([])
   const [nuevaTarea, setNuevaTarea] = useState("")
@@ -58,6 +58,8 @@ async function toggleTarea(id, completada) {
   }
 
   const completadas = tareas.filter(function(t) { return t.completada }).length
+  const pendientes = tareas.length - completadas
+  const puedeElevar = tareas.length > 0 && pendientes === 0
 
   return (
     <div className="actuacion-card">
@@ -103,8 +105,17 @@ async function toggleTarea(id, completada) {
             <button onClick={agregarTarea}>Agregar</button>
           </div>
 
-          <button className="btn-eliminar-actuacion" onClick={() => onEliminar(actuacion.id)}>
-            🗑️ Eliminar actuación
+          <button
+            type="button"
+            className="btn-elevar-actuacion"
+            disabled={!puedeElevar}
+            onClick={() => onElevar(actuacion.id)}
+          >
+            {tareas.length === 0
+              ? "Cargando tareas..."
+              : puedeElevar
+                ? "✓ Elevar actuación"
+                : `Faltan ${pendientes} tarea${pendientes === 1 ? "" : "s"}`}
           </button>
         </div>
       )}

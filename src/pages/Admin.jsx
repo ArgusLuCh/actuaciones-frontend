@@ -5,9 +5,11 @@ const API = "https://actuaciones-backend-production.up.railway.app"
 
 function Admin() {
   const [usuarios, setUsuarios] = useState([])
+  const [actuaciones, setActuaciones] = useState([])
   const [form, setForm] = useState({ nombre: "", dni: "" })
   const [error, setError] = useState("")
   const [mensaje, setMensaje] = useState("")
+  const [busquedaGlobal, setBusquedaGlobal] = useState("")
   const navigate = useNavigate()
   const token = localStorage.getItem('token')
 
@@ -19,8 +21,17 @@ function Admin() {
     setUsuarios(datos)
   }
 
+  async function cargarActuaciones() {
+    const res = await fetch(API + "/admin/actuaciones", {
+      headers: { Authorization: "Bearer " + token }
+    })
+    const datos = await res.json()
+    setActuaciones(datos)
+  }
+
   useEffect(function() {
     cargarUsuarios()
+    cargarActuaciones()
   }, [])
 
   async function crearUsuario() {
@@ -55,6 +66,7 @@ function Admin() {
       headers: { Authorization: "Bearer " + token }
     })
     cargarUsuarios()
+    cargarActuaciones()
   }
 
   async function resetearPassword(id) {
@@ -72,6 +84,23 @@ function Admin() {
     localStorage.removeItem('usuario')
     navigate('/login')
   }
+
+  const textoBusqueda = busquedaGlobal.trim().toLowerCase()
+  const actuacionesFiltradas = actuaciones.filter(function(a) {
+    if (!textoBusqueda) return true
+
+    return [
+      a.numero,
+      a.caratula,
+      a.damnificado,
+      a.lugar,
+      a.fecha_recepcion,
+      a.responsable_nombre,
+      a.responsable_dni
+    ].some(function(valor) {
+      return String(valor || "").toLowerCase().includes(textoBusqueda)
+    })
+  })
 
   return (
     <div className="dashboard">
@@ -127,6 +156,50 @@ function Admin() {
             )
           })}
         </div>
+
+        <section className="seccion seccion-actuaciones-globales">
+          <div className="seccion-header seccion-header-global">
+            <div>
+              <h2>Actuaciones del personal ({actuacionesFiltradas.length})</h2>
+              <p className="seccion-ayuda">Consulta general de las actuaciones registradas por cada usuario.</p>
+            </div>
+            <input
+              type="text"
+              className="input-busqueda-inline"
+              placeholder="Buscar por personal, número, lugar..."
+              aria-label="Buscar actuaciones del personal"
+              value={busquedaGlobal}
+              onChange={function(e) { setBusquedaGlobal(e.target.value) }}
+            />
+          </div>
+
+          {actuacionesFiltradas.length === 0 && (
+            <p className="vacio">
+              {textoBusqueda ? "No hay actuaciones que coincidan con la búsqueda" : "No hay actuaciones registradas"}
+            </p>
+          )}
+
+          {actuacionesFiltradas.map(function(a) {
+            return (
+              <article key={a.id} className="actuacion-global-card">
+                <div className="actuacion-global-info">
+                  <div className="actuacion-global-numero">Actuación {a.numero}</div>
+                  <div className="actuacion-global-caratula">{a.caratula}</div>
+                  <div className="actuacion-global-detalle">
+                    <span>{a.damnificado}</span>
+                    <span>{a.lugar}</span>
+                    <span>Fecha: {a.fecha_recepcion}</span>
+                  </div>
+                </div>
+                <div className="responsable-actuacion">
+                  <span className="responsable-etiqueta">Responsable</span>
+                  <strong>{a.responsable_nombre}</strong>
+                  <span>DNI {a.responsable_dni}</span>
+                </div>
+              </article>
+            )
+          })}
+        </section>
       </div>
     </div>
   )
