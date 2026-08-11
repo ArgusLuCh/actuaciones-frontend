@@ -3,10 +3,12 @@ import TareaItem from './TareaItem'
 
 const API = "https://actuaciones-backend-production.up.railway.app"
 
-function Actuacion({ actuacion, onElevar, token }) {
+function Actuacion({ actuacion, onEliminar, onElevar, token }) {
   const [abierto, setAbierto] = useState(false)
   const [tareas, setTareas] = useState([])
   const [nuevaTarea, setNuevaTarea] = useState("")
+  const [confirmandoElevacion, setConfirmandoElevacion] = useState(false)
+  const [confirmandoEliminacion, setConfirmandoEliminacion] = useState(false)
 
   async function cargarTareas() {
     const res = await fetch(API + "/actuaciones/" + actuacion.id + "/tareas", {
@@ -61,6 +63,16 @@ async function toggleTarea(id, completada) {
   const pendientes = tareas.length - completadas
   const puedeElevar = tareas.length > 0 && pendientes === 0
 
+  async function confirmarElevacion() {
+    const elevada = await onElevar(actuacion.id)
+    if (elevada) setConfirmandoElevacion(false)
+  }
+
+  async function confirmarEliminacion() {
+    const eliminada = await onEliminar(actuacion.id)
+    if (eliminada) setConfirmandoEliminacion(false)
+  }
+
   return (
     <div className="actuacion-card">
       <div className="actuacion-header" onClick={() => setAbierto(!abierto)}>
@@ -105,18 +117,54 @@ async function toggleTarea(id, completada) {
             <button onClick={agregarTarea}>Agregar</button>
           </div>
 
-          <button
-            type="button"
-            className="btn-elevar-actuacion"
-            disabled={!puedeElevar}
-            onClick={() => onElevar(actuacion.id)}
-          >
-            {tareas.length === 0
-              ? "Cargando tareas..."
-              : puedeElevar
-                ? "✓ Elevar actuación"
-                : `Faltan ${pendientes} tarea${pendientes === 1 ? "" : "s"}`}
-          </button>
+          {confirmandoElevacion && (
+            <div className="confirmacion-elevar" role="alertdialog" aria-label="Confirmar elevación de actuación">
+              <p>¿Confirmás que la actuación está completa y querés elevarla al historial?</p>
+              <div className="confirmacion-elevar-acciones">
+                <button type="button" className="btn-cancelar-elevacion" onClick={() => setConfirmandoElevacion(false)}>
+                  Cancelar
+                </button>
+                <button type="button" className="btn-confirmar-elevacion" onClick={confirmarElevacion}>
+                  Sí, elevar actuación
+                </button>
+              </div>
+            </div>
+          )}
+
+          {confirmandoEliminacion && (
+            <div className="modal-confirmacion-fondo" role="presentation">
+              <div className="modal-confirmacion modal-eliminacion" role="alertdialog" aria-modal="true" aria-label="Confirmar eliminación de actuación">
+                <h3>¿Eliminar actuación?</h3>
+                <p>Estás por eliminar la actuación <strong>N.º {actuacion.numero}</strong> de forma permanente. También se eliminarán sus tareas. Esta acción no se puede deshacer.</p>
+                <div className="modal-confirmacion-acciones">
+                  <button type="button" className="btn-cancelar-elevacion" onClick={() => setConfirmandoEliminacion(false)}>
+                    Cancelar
+                  </button>
+                  <button type="button" className="btn-confirmar-eliminacion" onClick={confirmarEliminacion}>
+                    Sí, eliminar definitivamente
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="actuacion-acciones">
+            <button
+              type="button"
+              className="btn-elevar-actuacion"
+              disabled={!puedeElevar}
+              onClick={() => setConfirmandoElevacion(true)}
+            >
+              {tareas.length === 0
+                ? "Cargando tareas..."
+                : puedeElevar
+                  ? "✓ Elevar actuación"
+                  : `Faltan ${pendientes} tarea${pendientes === 1 ? "" : "s"}`}
+            </button>
+            <button type="button" className="btn-eliminar-actuacion" onClick={() => setConfirmandoEliminacion(true)}>
+              Eliminar
+            </button>
+          </div>
         </div>
       )}
     </div>

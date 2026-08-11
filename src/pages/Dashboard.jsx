@@ -67,12 +67,28 @@ function Dashboard() {
 
     if (!res.ok) {
       setError(datos.error || "No se pudo elevar la actuación")
-      return
+      return false
     }
 
     setMensaje("Actuación elevada y guardada en el historial")
     cargarActuaciones()
     cargarHistorial()
+    return true
+  }
+
+  async function eliminarActuacion(id) {
+    const res = await fetch(API + "/actuaciones/" + id, {
+      method: "DELETE",
+      headers: { Authorization: "Bearer " + token }
+    })
+
+    if (!res.ok) {
+      setError("No se pudo eliminar la actuación")
+      return false
+    }
+
+    cargarActuaciones()
+    return true
   }
 
   async function alternarHistorial() {
@@ -129,6 +145,7 @@ return (
             <Actuacion
               key={a.id}
               actuacion={a}
+              onEliminar={eliminarActuacion}
               onElevar={elevarActuacion}
               token={token}
             />
