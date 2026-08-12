@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const API = "https://actuaciones-backend-production.up.railway.app"
@@ -7,35 +7,48 @@ function Login() {
   const [form, setForm] = useState({ dni: "", password: "" })
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const [calentando, setCalentando] = useState(true)
   const navigate = useNavigate()
   const [verPassword, setVerPassword] = useState(false)
 
   async function handleLogin() {
+    setError("")
     setLoading(true)
-    const res = await fetch(API + "/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form)
-    })
-    const datos = await res.json()
-    setLoading(false)
+    try {
+      const res = await fetch(API + "/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form)
+      })
+      const datos = await res.json()
 
-    if (!res.ok) {
-      setError(datos.error)
-      return
-    }
+      if (!res.ok) {
+        setError(datos.error)
+        return
+      }
 
-    localStorage.setItem('token', datos.token)
-    localStorage.setItem('usuario', JSON.stringify(datos.usuario))
+      localStorage.setItem('token', datos.token)
+      localStorage.setItem('usuario', JSON.stringify(datos.usuario))
 
-    if (datos.usuario.debe_cambiar_password) {
-      navigate('/cambiar-password')
-    } else if (datos.usuario.rol === 'admin') {
-      navigate('/admin')
-    } else {
-      navigate('/dashboard')
+      if (datos.usuario.debe_cambiar_password) {
+        navigate('/cambiar-password')
+      } else if (datos.usuario.rol === 'admin') {
+        navigate('/admin')
+      } else {
+        navigate('/dashboard')
+      }
+    } catch {
+      setError("No se pudo conectar con el servidor. Intentá nuevamente en unos instantes.")
+    } finally {
+      setLoading(false)
     }
   }
+
+  useEffect(function() {
+    fetch(API + "/health", { cache: "no-store" })
+      .catch(function() {})
+      .finally(function() { setCalentando(false) })
+  }, [])
 
   return (
     <div className="auth-container">
@@ -67,8 +80,8 @@ function Login() {
     👁
   </button>
 </div>
-        <button onClick={handleLogin} disabled={loading}>
-          {loading ? "Entrando..." : "Entrar"}
+        <button onClick={handleLogin} disabled={loading || calentando}>
+          {calentando ? "Iniciando servidor..." : loading ? "Entrando..." : "Entrar"}
         </button>
       </div>
     </div>
