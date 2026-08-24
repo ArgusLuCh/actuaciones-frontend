@@ -13,7 +13,7 @@ function FormActuacion({ onAgregar }) {
   async function handleSubmit() {
     if (!form.numero || !form.damnificado || !form.lugar || !form.caratula || !form.fecha_recepcion) return
     await onAgregar(form)
-    setForm({ numero: "", damnificado: "", lugar: "", caratula: "", fecha_recepcion: "" })
+    setForm({ numero: "", damnificado: "", lugar: "", caratula: "S/", fecha_recepcion: "" })
     setAbierto(false)
   }
 
@@ -33,7 +33,7 @@ function FormActuacion({ onAgregar }) {
             type="text"
             placeholder="N° de actuación"
             value={form.numero}
-            onChange={function(e) { setForm({...form, numero: e.target.value}) }}
+            onChange={function(e) { setForm({...form, numero: e.target.value.toUpperCase()}) }}
           />
           <div className="field-group">
             <label className="field-label">Fecha del hecho</label>
@@ -48,23 +48,23 @@ function FormActuacion({ onAgregar }) {
           type="text"
           placeholder="Damnificado"
           value={form.damnificado}
-          onChange={function(e) { setForm({...form, damnificado: e.target.value}) }}
+          onChange={function(e) { setForm({...form, damnificado: e.target.value.toUpperCase()}) }}
         />
         <input
           type="text"
           placeholder="Lugar de denuncia"
           value={form.lugar}
-          onChange={function(e) { setForm({...form, lugar: e.target.value}) }}
+          onChange={function(e) { setForm({...form, lugar: e.target.value.toUpperCase()}) }}
         />
         <input
           type="text"
           placeholder="S/ Carátula"
           value={form.caratula}
           onChange={function(e) {
-            const valor = e.target.value
+            const valor = e.target.value.toUpperCase()
             if (!valor.startsWith("S/")) return
             setForm({...form, caratula: valor})
-          }}
+             }}
         />
         <button onClick={handleSubmit} className="btn-registrar">Registrar actuación</button>
       </div>
