@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 const API = "https://actuaciones-backend-production.up.railway.app"
 
-function Admin() {
+function Admin({ onToggleTema, tema }) {
   const [usuarios, setUsuarios] = useState([])
   const [actuaciones, setActuaciones] = useState([])
   const [form, setForm] = useState({ nombre: "", dni: "" })
@@ -107,8 +107,11 @@ function Admin() {
       <header className="dashboard-header">
         <h1>Panel de Administración</h1>
         <div className="header-right">
-          <button onClick={cerrarSesion} className="btn-logout">Cerrar sesión</button>
-        </div>
+  <button onClick={onToggleTema} className="btn-tema">
+    {tema === 'dark' ? '☀️' : '🌙'}
+  </button>
+  <button onClick={cerrarSesion} className="btn-logout">Cerrar sesión</button>
+</div>
       </header>
 
       <div className="dashboard-content">

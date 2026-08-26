@@ -10,6 +10,7 @@
    VARIABLES
    ================================================ */
 :root {
+
   /* Fondos */
   --bg:            #0A0A0F;
   --surface:       #111118;
@@ -76,6 +77,50 @@
   --t-fast:   120ms cubic-bezier(0.4, 0, 0.2, 1);
   --t-normal: 220ms cubic-bezier(0.4, 0, 0.2, 1);
   --t-slow:   380ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ================================================
+   TEMA CLARO
+   ================================================ */
+[data-theme="light"] {
+  --bg:            #F0F2F5;
+  --surface:       #FFFFFF;
+  --surface-2:     #F4F5F8;
+  --surface-3:     #EAECF0;
+
+  --text:          #0A0A1A;
+  --text-2:        #404060;
+  --text-3:        #8888A8;
+
+  --border:        #E0E0EE;
+  --border-2:      #D0D0E4;
+  --border-3:      #C0C0D8;
+
+  --red-dim:       rgba(204, 28, 28, 0.08);
+  --red-border:    rgba(204, 28, 28, 0.25);
+
+  --blue-dim:      rgba(32, 96, 176, 0.08);
+  --blue-border:   rgba(32, 96, 176, 0.25);
+
+  --success-dim:   rgba(26, 138, 74, 0.08);
+  --success-border:rgba(26, 138, 74, 0.25);
+
+  --warning-dim:   rgba(160, 112, 16, 0.08);
+  --warning-border:rgba(160, 112, 16, 0.25);
+}
+
+[data-theme="light"] .dashboard-header {
+  background: rgba(240, 242, 245, 0.95);
+}
+
+[data-theme="light"] .auth-container {
+  background-image:
+    radial-gradient(ellipse at 25% 15%, rgba(32, 96, 176, 0.05) 0%, transparent 55%),
+    radial-gradient(ellipse at 75% 85%, rgba(204, 28, 28, 0.03) 0%, transparent 55%);
+}
+
+[data-theme="light"] input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0);
 }
 
 /* ================================================
@@ -1434,4 +1479,25 @@ button:focus-visible {
   .historial-card {
     padding: var(--s3) var(--s4);
   }
+}
+
+/* ================================================
+   BOTÓN TEMA
+   ================================================ */
+.btn-tema {
+  background: transparent;
+  border: 1px solid var(--border-3);
+  border-radius: var(--r-md);
+  padding: var(--s2) var(--s3);
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  transition:
+    background var(--t-fast),
+    border-color var(--t-fast);
+}
+
+.btn-tema:hover {
+  background: var(--surface-2);
+  border-color: var(--border-2);
 }

@@ -5,7 +5,7 @@ import Actuacion from '../components/Actuacion'
 
 const API = "https://actuaciones-backend-production.up.railway.app"
 
-function Dashboard() {
+function Dashboard({ onToggleTema, tema }) {
   const [actuaciones, setActuaciones] = useState([])
   const [historial, setHistorial] = useState([])
   const navigate = useNavigate()
@@ -116,9 +116,12 @@ return (
     <header className="dashboard-header">
       <h1>Sistema de Actuaciones</h1>
       <div className="header-right">
-        <span>Hola, {usuario.nombre}</span>
-        <button onClick={cerrarSesion} className="btn-logout">Cerrar sesión</button>
-      </div>
+      <span>Hola, {usuario.nombre}</span>
+      <button onClick={onToggleTema} className="btn-tema">
+      {tema === 'dark' ? '☀️' : '🌙'}
+      </button>
+      <button onClick={cerrarSesion} className="btn-logout">Cerrar sesión</button>
+    </div>
     </header>
 
     <div className="dashboard-content">
