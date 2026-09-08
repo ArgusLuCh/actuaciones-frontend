@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const API = "https://actuaciones-backend-production.up.railway.app"
 
@@ -110,6 +111,9 @@ function Admin({ onToggleTema, tema }) {
   <button onClick={onToggleTema} className="btn-tema">
     {tema === 'dark' ? '☀️' : '🌙'}
   </button>
+  <button onClick={() => navigate('/estadisticas')} className="btn-nuevo">
+  📊 Estadísticas
+</button>
   <button onClick={cerrarSesion} className="btn-logout">Cerrar sesión</button>
 </div>
       </header>

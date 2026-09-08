@@ -4,6 +4,7 @@ import Login from './pages/Login'
 import CambiarPassword from './pages/CambiarPassword'
 import Dashboard from './pages/Dashboard'
 import Admin from './pages/Admin'
+import Estadisticas from './pages/Estadisticas'
 
 function App() {
   const token = localStorage.getItem('token')
@@ -31,7 +32,11 @@ function App() {
           <Route
             path="*"
             element={<Navigate to={token ? (usuario.rol === 'admin' ? '/admin' : '/dashboard') : '/login'} />}
-          />
+            />
+          <Route
+          path="/estadisticas"
+          element={token && usuario.rol === 'admin' ? <Estadisticas onToggleTema={toggleTema} tema={tema} /> : <Navigate to="/login" />}
+/>
         </Routes>
       </BrowserRouter>
     </div>
