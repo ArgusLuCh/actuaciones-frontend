@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
 
 const API = "https://actuaciones-backend-production.up.railway.app"
 
