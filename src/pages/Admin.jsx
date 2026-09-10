@@ -113,6 +113,9 @@ function Admin({ onToggleTema, tema }) {
   <button onClick={() => navigate('/estadisticas')} className="btn-nuevo">
   📊 Estadísticas
 </button>
+  <button onClick={() => navigate('/registros')} className="btn-nuevo">
+  Registros
+</button>
   <button onClick={cerrarSesion} className="btn-logout">Cerrar sesión</button>
 </div>
       </header>

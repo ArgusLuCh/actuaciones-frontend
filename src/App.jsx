@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import './App.css'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Login from './pages/Login'
 import CambiarPassword from './pages/CambiarPassword'
 import Dashboard from './pages/Dashboard'
 import Admin from './pages/Admin'
 import Estadisticas from './pages/Estadisticas'
+import Registros from './pages/Registros'
 
 function App() {
   const token = localStorage.getItem('token')
@@ -37,6 +39,7 @@ function App() {
           path="/estadisticas"
           element={token && usuario.rol === 'admin' ? <Estadisticas onToggleTema={toggleTema} tema={tema} /> : <Navigate to="/login" />}
 />
+          <Route path="/registros" element={token ? <Registros /> : <Navigate to="/login" />} />
         </Routes>
       </BrowserRouter>
     </div>

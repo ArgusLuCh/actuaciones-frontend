@@ -117,6 +117,7 @@ return (
       <h1>Sistema de Actuaciones</h1>
       <div className="header-right">
       <span>Hola, {usuario.nombre}</span>
+      <button onClick={() => navigate('/registros')} className="btn-nuevo">Registros</button>
       <button onClick={onToggleTema} className="btn-tema">
       {tema === 'dark' ? '☀️' : '🌙'}
       </button>
